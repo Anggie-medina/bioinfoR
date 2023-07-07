@@ -111,4 +111,15 @@ plot(x= penguins$flipper_length_mm, y= penguins$body_mass_g)
 penguislm = lm(flipper_length_mm ~ body_mass_g, data = penguins)
 summary(penguislm)
 ```
+$H_o: \beta_1 = 0 $ No hay cambio de la aleta con respecto al peso corporal.
+$H_a: \beta_1 \neq 0$ Si hay cambio de la aleta por el peso corporal.
 
+```{r vis_penguins}
+library(ggplot2)
+penguins%>% ggplot(aes(x= body_mass_g, y= flipper_length_mm)) + geom_point() + geom_smooth(method = "lm") + theme_classic()
+```
+
+Con un 95% de confianza se aceptan los valores de $\beta:0$ y $\beta:1$. 
+Cuando no se tiene una la longuitud de la aleta, la medida del la masa corporal cambia en $1.367e^2$. Por cada $1.528e^-2$ mm de cambio en la longuitud de la aleta la masa corporal cambia en $1.367e^2$.
+
+$$ PL = 1.367e^2 + 1.528e^-2 \cdot PW + \epsilon$$ 
