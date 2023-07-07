@@ -4,6 +4,13 @@ author: "Anggie Medina"
 date: "2023-07-06"
 output: html_document
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
 # Introduccion a R
 
 Se revisara los fundamentos de R
@@ -67,5 +74,41 @@ library(ggplot2)
 
 gbtemp %>% ggplot(aes(x= SEASON, y= MEASUREMENT, color= SEASON)) + geom_boxplot() + theme_classic()
 
+```
+## Analisis de regresion (efectos)
+$H_0: \beta_1 = 0 $ No hay cambio del largo del sepalo debido al ancho del setalo.
+$H_a: \beta_1 \neq 0$ Existe cambio del largo del sepalo debido al ancho del sepalo.
+```{r lm}
+head(iris)
+irislm = lm(Sepal.Length ~ Sepal.Width, data = iris)
+summary(irislm)
+```
+```{r iris}
+plot(x= iris$Sepal.Width, y= iris$Sepal.Length)
+```
+
+```{r petal_lm}
+plot(x= iris$Petal.Width, y= iris$Petal.Length)
+
+irislm = lm(Petal.Length ~ Petal.Width, data = iris)
+summary(irislm)
+```
+```{r vis_iris}
+library(ggplot2)
+iris%>% ggplot(aes(x= Petal.Width, y= Petal.Length)) + geom_point() + geom_smooth(method = "lm") + theme_dark() + facet_grid(Species~., scales = "free")
+```
+
+Con un 95% de confianza se acepta los valores de $\beta:0$ y $\beta:1$. Cuando no existe medida del ancho del petalo, la medida del largo es de 1.08 mm (biologicamente no es posible). Por cada 2.22mm de cambio en el largo del petalo el ancho cambia en 1 mm. 
+
+### Actividad 
+Replica de la regresion lineal en la data de palmerpenguis.
+```{r actividad}
+library(palmerpenguins)
+#data(package = 'palmerpenguis')
+
+plot(x= penguins$flipper_length_mm, y= penguins$body_mass_g)
+
+penguislm = lm(flipper_length_mm ~ body_mass_g, data = penguis)
+summary(penguislm)
 ```
 
