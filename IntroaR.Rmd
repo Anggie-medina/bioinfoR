@@ -1,0 +1,71 @@
+---
+title: "Introduccion a R"
+author: "Anggie Medina"
+date: "2023-07-06"
+output: html_document
+---
+# Introduccion a R
+
+Se revisara los fundamentos de R
+## Vectores
+```{r dormirH}
+dormirH <- c(8, 6, 4, 3, 5, 10)
+dormirH [1:6]
+mean(dormirH)
+sd (dormirH)
+nombres <- c("Moises", "Mika", "Dorian", "Rani", "Emily", "Henry")
+nombres [2]
+```
+## Listas
+```{r lista}
+Hdormir = list(nombre = nombres,
+               horas = dormirH)
+Hdormir$nombre
+Hdormir$horas
+```
+## DataFrame (tablas)
+```{r tablas}
+df_dormir <- data.frame(cbind(nombres, dormirH))
+df_dormir
+```
+## Leer datos externos
+```{r leerExter}
+gbtemp <- read.csv("data/gbtemp.csv", header = TRUE, sep = ",")
+head(gbtemp, 3)
+
+```
+### Exploracion
+```{r explor_gbtemp}
+str(gbtemp)
+```
+```{r summary_gbtemp}
+summary(gbtemp)
+```
+## Analisis
+### Comparacion (prueba de hipotesis)
+$H_0: \mu_w = \mu_su = \mu_sp = \mu_f$ No existe diferentcia en las medidas asociado a la temporada 
+$H_a: \mu_w \neq \neq \mu_su \neq \mu_sp \neq \mu_f$
+```{r gbtemp_hipotesis}
+gbtemp$SEASON <- factor(gbtemp$SEASON)
+
+library(dplyr)
+gbtemp %>% group_by(SEASON) %>% summarise(mean_meas = mean(MEASUREMENT))
+```
+### Analisis de varianzas (AOV, ANOVA)
+```{r aov}
+summary(aov(MEASUREMENT ~ SEASON, data =gbtemp))
+```
+con una confianza del 95% existe diferencias de la medida en al menos una de las estaciones. h_a
+##### Analisis posterior (ANOVA)
+```{r post_gbtemp}
+aov_gbtemp <- aov(MEASUREMENT ~ SEASON, data =gbtemp)
+
+TukeyHSD(aov_gbtemp, "SEASON")
+```
+```{r visual}
+library(ggplot2)
+
+gbtemp %>% ggplot(aes(x= SEASON, y= MEASUREMENT, color= SEASON)) + geom_boxplot() + theme_classic()
+
+```
+
