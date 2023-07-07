@@ -108,7 +108,7 @@ library(palmerpenguins)
 
 plot(x= penguins$flipper_length_mm, y= penguins$body_mass_g)
 
-penguislm = lm(flipper_length_mm ~ body_mass_g, data = penguis)
+penguislm = lm(flipper_length_mm ~ body_mass_g, data = penguins)
 summary(penguislm)
 ```
 
